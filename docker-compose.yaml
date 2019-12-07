@@ -1,0 +1,7 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres:11.3-alpine
+    ports:
+      - target: 5432
+        published: 10001
