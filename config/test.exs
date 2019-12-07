@@ -5,6 +5,7 @@ config :fgc, Fgc.Repo,
   username: "postgres",
   password: "postgres",
   database: "fgc_test",
+  port: 10001,
   hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox
 
