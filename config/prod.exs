@@ -13,7 +13,7 @@ config :fgc, FgcWeb.Endpoint,
   url: [scheme: "https", host: "gentle-ridge-36852", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json",
-  check_origin: ["http://localhost:5000"]
+  check_origin: ["http://localhost:5000", "https://vibrant-bohr-f33d77.netlify.com"]
 
 # Do not print debug messages in production
 config :logger, level: :info
@@ -52,7 +52,7 @@ config :logger, level: :info
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
 config :cors_plug,
-  origin: ["http://localhost:5000"]
+  origin: ["http://localhost:5000", "https://vibrant-bohr-f33d77.netlify.com"]
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.
