@@ -66,6 +66,9 @@ config :fgc, FgcWeb.Endpoint,
     ]
   ]
 
+config :fgc, Fgc.UserManager.Guardian,
+  secret_key: "super_secret"
+
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
