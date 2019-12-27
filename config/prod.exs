@@ -12,7 +12,8 @@ use Mix.Config
 config :fgc, FgcWeb.Endpoint,
   url: [scheme: "https", host: "gentle-ridge-36852", port: 443],
   force_ssl: [rewrite_on: [:x_forwarded_proto]],
-  cache_static_manifest: "priv/static/cache_manifest.json"
+  cache_static_manifest: "priv/static/cache_manifest.json",
+  check_origin: ["http://localhost:5000"]
 
 # Do not print debug messages in production
 config :logger, level: :info
