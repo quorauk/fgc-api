@@ -50,6 +50,8 @@ config :logger, level: :info
 #       force_ssl: [hsts: true]
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
+config :cors_plug,
+  origin: ["http://localhost:5000"]
 
 # Finally import the config/prod.secret.exs which loads secrets
 # and configuration from environment variables.

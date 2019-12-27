@@ -18,7 +18,7 @@ defmodule FgcWeb.Router do
   end
 
   pipeline :api do
-    plug CORSPlug, origin: "http://localhost:3000"
+    # plug CORSPlug, origin: "http://localhost:3000"
     plug :accepts, ["json"]
   end
 
@@ -42,10 +42,10 @@ defmodule FgcWeb.Router do
     pipe_through [:api, :auth]
 
     post "/login", SessionController, :json_login
-    options "/login", SessionController, :options
+    # options "/login", SessionController, :options
 
     delete "/logout", SessionController, :json_logout
-    options "/logout", SessionController, :options
+    # options "/logout", SessionController, :options
   end
 
   # Other scopes may use custom stacks.
@@ -53,20 +53,20 @@ defmodule FgcWeb.Router do
     pipe_through [:api, :auth, :ensure_auth]
 
     get "/me", SessionController, :me
-    options "/me", SessionController, :options
+    # options "/me", SessionController, :options
 
     get "/me/webhook_token", SessionController, :webhook_token
-    options "/me/webhook_token", SessionController, :webhook_token
+    # options "/me/webhook_token", SessionController, :webhook_token
 
     get "/validate-login", SessionController, :validate_login
 
     get "/me/scoreboards", ScoreboardController, :index
     post "/me/scoreboards", ScoreboardController, :create
-    options "/me/scoreboards", ScoreboardController, :options
+    # options "/me/scoreboards", ScoreboardController, :options
 
     get "/me/scoreboards/:id", ScoreboardController, :get
     delete "/me/scoreboards/:id", ScoreboardController, :delete
-    options "/me/scoreboards/:id", ScoreboardController, :options
+    # options "/me/scoreboards/:id", ScoreboardController, :options
 
   end
 end

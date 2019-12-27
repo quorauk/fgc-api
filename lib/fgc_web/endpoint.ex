@@ -42,5 +42,6 @@ defmodule FgcWeb.Endpoint do
     key: "_fgc_key",
     signing_salt: "kbBngnqp"
 
+  plug CORSPlug
   plug FgcWeb.Router
 end
