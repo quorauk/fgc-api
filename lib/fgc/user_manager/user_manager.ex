@@ -22,4 +22,9 @@ defmodule Fgc.UserManager.UserManager do
         end
     end
   end
+
+  def token_for_user(user) do
+    {:ok, token, _} = Guardian.encode_and_sign(user)
+    {:ok, user, token}
+  end
 end

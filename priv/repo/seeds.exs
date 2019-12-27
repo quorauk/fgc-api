@@ -9,3 +9,4 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+Fgc.UserManager.create_user(%{id: 1, username: "me", password: "secret"})

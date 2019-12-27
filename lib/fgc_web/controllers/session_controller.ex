@@ -1,6 +1,7 @@
 defmodule FgcWeb.SessionController do
   use FgcWeb, :controller
 
+
   alias Fgc.{UserManager, UserManager.User, UserManager.Guardian}
 
   def new(conn, _) do
@@ -12,6 +13,16 @@ defmodule FgcWeb.SessionController do
     else
       render(conn, "new.html", changeset: changeset, action: Routes.session_path(conn, :login))
     end
+  end
+
+  def me(conn, _) do
+    user = Guardian.Plug.current_resource(conn)
+    json(conn, %{username: user.username})
+  end
+
+  def validate_login(conn, _) do
+    conn
+    |> send_resp(201, "")
   end
 
   def login(conn, %{"user" => %{"username" => username, "password" => password}}) do
@@ -30,9 +41,24 @@ defmodule FgcWeb.SessionController do
     |> redirect(to: "/login")
   end
 
-  defp json_login_reply({:ok, _, token}, conn) do
+  def webhook_token(conn, _) do
+    user = Guardian.Plug.current_resource(conn)
+    {:ok, jwt, token} = UserManager.UserManager.token_for_user(user)
     conn
     |> json(token)
+  end
+
+  defp json_login_reply({:ok, jwt, token}, conn) do
+    conn
+    |> Guardian.Plug.sign_in(jwt)
+    |> json(token)
+  end
+
+
+  def json_logout(conn, _) do
+    conn
+    |> Guardian.Plug.sign_out()
+    |> text("ok")
   end
 
   defp login_reply({:ok, user, _}, conn) do

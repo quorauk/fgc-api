@@ -2,7 +2,7 @@ defmodule FgcWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", FgcWeb.RoomChannel
+  channel "scoreboard:*", FgcWeb.RoomChannel
 
   # Socket params are passed from the client and can
   # be used to verify and authenticate a user. After
@@ -15,6 +15,13 @@ defmodule FgcWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+  def connect(%{"token" => token}, socket, _connect_info) do
+    case Guardian.decode_and_verify(Fgc.UserManager.Guardian, token) do
+      {:ok, claims} -> {:ok, assign(socket, :claims, claims)}
+      {:err, err} -> :error
+    end
+  end
+
   def connect(_params, socket, _connect_info) do
     {:ok, socket}
   end
