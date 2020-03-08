@@ -45,7 +45,9 @@ defmodule Fgc.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:guardian, "~> 1.2"},
       {:argon2_elixir, "~> 2.0"},
-      {:cors_plug, "~> 1.5"}
+      {:cors_plug, "~> 1.5"},
+      {:cowlib, "~> 2.8.0", override: true},
+      {:nostrum, "~> 0.4"}
     ]
   end
 

@@ -18,7 +18,7 @@ defmodule FgcWeb.UserSocket do
   def connect(%{"token" => token}, socket, _connect_info) do
     case Guardian.decode_and_verify(Fgc.UserManager.Guardian, token) do
       {:ok, claims} -> {:ok, assign(socket, :claims, claims)}
-      {:err, err} -> :error
+      {:err, _err} -> :error
     end
   end
 

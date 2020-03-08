@@ -81,3 +81,5 @@ config :phoenix, :plug_init_mode, :runtime
 
 config :cors_plug,
   origin: ["http://localhost:3000", "http://localhost:5000"]
+
+import_config "personal.exs"
