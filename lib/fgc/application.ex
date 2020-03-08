@@ -11,10 +11,9 @@ defmodule Fgc.Application do
       # Start the Ecto repository
       Fgc.Repo,
       # Start the endpoint when the application starts
-      FgcWeb.Endpoint,
+      FgcWeb.Endpoint
       # Starts a worker by calling: Fgc.Worker.start_link(arg)
-      # {Fgc.Worker, arg}
-      Fgc.Bot.Consumer,
+      # {Fgc.Worker, arg},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

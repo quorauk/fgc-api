@@ -43,7 +43,7 @@ defmodule FgcWeb.SessionController do
 
   def webhook_token(conn, _) do
     user = Guardian.Plug.current_resource(conn)
-    {:ok, _jwt, token} = UserManager.UserManager.token_for_user(user)
+    {:ok, jwt, token} = UserManager.UserManager.token_for_user(user)
     conn
     |> json(token)
   end

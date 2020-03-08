@@ -22,7 +22,7 @@ defmodule FgcWeb.ScoreboardController do
   def delete(conn, %{"id" => id}) do
     user = Guardian.Plug.current_resource(conn)
     scoreboard = Fgc.Repo.one(from s in Fgc.Scoreboards.Scoreboard, where: s.id == ^id and s.user_id == ^user.id)
-    {:ok, _struct} = Fgc.Repo.delete(scoreboard)
+    {:ok, struct} = Fgc.Repo.delete(scoreboard)
     text(conn, "done")
   end
 

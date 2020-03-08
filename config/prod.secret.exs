@@ -30,10 +30,6 @@ config :fgc, FgcWeb.Endpoint,
 config :fgc, Fgc.UserManager.Guardian,
   secret_key: secret_key_base
 
-config :nostrum,
-  token: System.get_env("DISCORD_TOKEN"),
-  num_shards: :auto
-
 # ## Using releases (Elixir v1.9+)
 #
 # If you are doing OTP releases, you need to instruct Phoenix
