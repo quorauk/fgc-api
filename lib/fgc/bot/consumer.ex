@@ -24,7 +24,7 @@ defmodule Fgc.Bot.Consumer do
 
     defp get_permissions(guild_id, author_id) do
         with {:ok, guild} <- Nostrum.Cache.GuildCache.get!(guild_id) do
-            case guild.members |> Map.get(149202047244304384) do
+            case guild.members |> Map.get(author_id) do
                 nil -> {:error, :user_not_found}
                 permissions -> {:ok, permissions}
             end
