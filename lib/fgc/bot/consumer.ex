@@ -22,6 +22,15 @@ defmodule Fgc.Bot.Consumer do
         end
     end
 
+    defp get_permissions(guild_id, author_id) do
+        with {:ok, guild} <- Nostrum.Cache.GuildCache.get!(guild_id) do
+            case guild.members |> Map.get(149202047244304384) do
+                nil -> {:error, :user_not_found}
+                permissions -> {:ok, permissions}
+            end
+        end
+    end
+
     def handle_event({:MESSAGE_CREATE, message, _ws}) do
         case command(message) do
             :ok -> :noop
@@ -45,34 +54,44 @@ defmodule Fgc.Bot.Consumer do
         |> Enum.map(fn %Role{name: name} -> "!iam " <> name end)
         |> Enum.join("\n")
 
-        msg = with "" <- msg do
-            "no roles set up, use !addrole to add one"
+        msg = case msg do
+            "" -> "no roles set up, use !addrole to add one"
+            msg -> "Available Roles\n\nUse `!iam role` to add a role\nUse `!iamn role` to remove a role\n\n" <> msg
         end
 
         {:ok, msg}
     end
 
-    defp command(%Message{guild_id: guild_id, content: "!addrole " <> new_role}) do
-        IO.inspect(find_role_by_name(guild_id, new_role))
-        case find_role_by_name(guild_id, new_role) do
-         {:ok, role} ->
-            Fgc.Repo.insert(%Fgc.Bot.Role{guild: guild_id |> to_string, role_id: role.id |> to_string})
-            :ok
-         {:error, :not_found} ->
-            role = Api.create_guild_role(guild_id, name: new_role)
-            IO.inspect(role)
-            Fgc.Repo.insert(%Fgc.Bot.Role{guild: guild_id |> to_string, role_id: role.id |> to_string})
-            :ok
-         _ -> true
+    defp command(%Message{guild_id: guild_id, content: "!addrole " <> new_role, author: author}) do
+        permissions = get_permissions(guild_id, author.id)
+        case Enum.member?(permissions, :manage_roles) do
+            true ->
+                case find_role_by_name(guild_id, new_role) do
+                {:ok, role} ->
+                    Fgc.Repo.insert(%Fgc.Bot.Role{guild: guild_id |> to_string, role_id: role.id |> to_string})
+                    :ok
+                {:error, :not_found} ->
+                    role = Api.create_guild_role(guild_id, name: new_role)
+                    IO.inspect(role)
+                    Fgc.Repo.insert(%Fgc.Bot.Role{guild: guild_id |> to_string, role_id: role.id |> to_string})
+                    :ok
+                _ -> true
+                end
+            false -> {:error, "you do not have the permissions to do this"}
         end
     end
 
-    defp command(%Message{guild_id: guild_id, content: "!removerole " <> to_remove}) do
-        with {:ok, role} <- find_role_by_name(guild_id, to_remove) do
-            from(r in Fgc.Bot.Role,
-                where: r.role_id == ^(role.id |> to_string))
-            |> Fgc.Repo.delete_all
-            :ok
+    defp command(%Message{guild_id: guild_id, content: "!removerole " <> to_remove, author: author}) do
+        permissions = get_permissions(guild_id, author.id)
+        case Enum.member?(permissions, :manage_roles) do
+            true ->
+                with {:ok, role} <- find_role_by_name(guild_id, to_remove) do
+                    from(r in Fgc.Bot.Role,
+                        where: r.role_id == ^(role.id |> to_string))
+                    |> Fgc.Repo.delete_all
+                    :ok
+                end
+            false -> {:error, "you do not have the permissions to do this"}
         end
     end
 
@@ -92,6 +111,10 @@ defmodule Fgc.Bot.Consumer do
                 {:error, _error} -> {:error, "couldn't add role, possibly missing permissions"}
             end
         end
+    end
+
+    defp command(%Message{guild_id: guild_id, content: "!help" <> _}) do
+        {:ok, "`!help` get help\n`!iam role` set role on yourself\n`!iamn role` remove role from yourself\n`!showroles` see all roles available on server\n`!addrole role` make role available to be added, will create if it doesn't already exist\n`!removerole role` will make the role unavailable to be added by the bot"}
     end
 
     defp command(_), do: :ok
