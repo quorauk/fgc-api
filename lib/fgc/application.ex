@@ -14,6 +14,7 @@ defmodule Fgc.Application do
       FgcWeb.Endpoint,
       # Starts a worker by calling: Fgc.Worker.start_link(arg)
       # {Fgc.Worker, arg}
+      Fgc.Bot.Consumer
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
