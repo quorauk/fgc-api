@@ -1,0 +1,5 @@
+use Mix.Config
+
+config :nostrum,
+   token: "discord-bot-token",
+   num_shards: :auto
