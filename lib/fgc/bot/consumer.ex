@@ -113,7 +113,7 @@ defmodule Fgc.Bot.Consumer do
         end
     end
 
-    defp command(%Message{guild_id: guild_id, content: "!help" <> _}) do
+    defp command(%Message{content: "!help" <> _}) do
         {:ok, "`!help` get help\n`!iam role` set role on yourself\n`!iamn role` remove role from yourself\n`!showroles` see all roles available on server\n`!addrole role` make role available to be added, will create if it doesn't already exist\n`!removerole role` will make the role unavailable to be added by the bot"}
     end
 
