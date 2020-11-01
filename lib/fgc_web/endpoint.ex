@@ -41,6 +41,7 @@ defmodule FgcWeb.Endpoint do
     store: :cookie,
     key: "_fgc_key",
     signing_salt: "kbBngnqp"
+    extra: "SameSite=None"
 
   plug CORSPlug
   plug FgcWeb.Router
