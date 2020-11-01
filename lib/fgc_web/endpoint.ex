@@ -40,7 +40,7 @@ defmodule FgcWeb.Endpoint do
   plug Plug.Session,
     store: :cookie,
     key: "_fgc_key",
-    signing_salt: "kbBngnqp"
+    signing_salt: "kbBngnqp",
     extra: "SameSite=None"
 
   plug CORSPlug
